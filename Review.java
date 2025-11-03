@@ -1,7 +1,7 @@
 public class Review {
     
     private int customerId;
-    private int rating;     // 1 to 5
+    private int rating;   // 1 to 5
     private String comment;
 
     public Review(int customerId, int rating, String comment) {

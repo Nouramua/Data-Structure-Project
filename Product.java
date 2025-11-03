@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 public class Product {
 
     private int productId;
@@ -5,16 +7,14 @@ public class Product {
     private double price;
     private int stock;
 
-    private Review[] reviews;
-    private int reviewCount;
+    private LinkedList<Review> reviews;
 
     public Product(int productId, String name, double price, int stock) {
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.stock = stock;
-        this.reviews = new Review[100];
-        this.reviewCount = 0;
+        this.reviews = new LinkedList<>();
     }
 
     public String getName() {
@@ -22,10 +22,10 @@ public class Product {
     }
 
     public int getReviewCount() {
-        return reviewCount;
+        return reviews.size();
     }
 
-    public Review[] getReviews() {
+    public LinkedList<Review> getReviews() {
         return reviews;
     }
     public double getPrice() { 
@@ -41,19 +41,14 @@ public class Product {
          }
 
     public void addReview(Review r) {
-        if (reviewCount < reviews.length) {
-            reviews[reviewCount] = r;
-            reviewCount++;
-        } else {
-            System.out.println("Cannot add more reviews for product " + name);
-        }
+        reviews.add(r);
     }
 
     public void editReview(int customerId, int newRating, String newComment) {
-        for (int i = 0; i < reviewCount; i++) {
-            if (reviews[i].getCustomerId() == customerId) {
-                reviews[i].setRating(newRating);
-                reviews[i].setComment(newComment);
+        for (Review rev : reviews) {
+            if (rev.getCustomerId() == customerId) {
+                rev.setRating(newRating);
+                rev.setComment(newComment);
                 System.out.println("Review updated for product: " + name);
                 return;
             }
@@ -62,12 +57,12 @@ public class Product {
     }
 
     public double getAverageRating() {
-        if (reviewCount == 0) return 0;
+        if (reviews.isEmpty()) return 0;
         double sum = 0;
-        for (int i = 0; i < reviewCount; i++) {
-            sum += reviews[i].getRating();
+        for (Review rev : reviews) {
+            sum += rev.getRating();
         }
-        return sum / reviewCount;
+        return sum / reviews.size();
     }
 
 }//End Class
