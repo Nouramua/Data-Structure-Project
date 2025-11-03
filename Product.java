@@ -28,6 +28,17 @@ public class Product {
     public Review[] getReviews() {
         return reviews;
     }
+    public double getPrice() { 
+        return price;
+     }
+
+    public int getStock() {
+         return stock; 
+        }
+
+    public void setStock(int stock) {
+         this.stock = stock;
+         }
 
     public void addReview(Review r) {
         if (reviewCount < reviews.length) {
@@ -58,4 +69,5 @@ public class Product {
         }
         return sum / reviewCount;
     }
+
 }//End Class
