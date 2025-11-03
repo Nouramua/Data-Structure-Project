@@ -1,6 +1,7 @@
 // LinkedList.java
 public class LinkedList<T> {
     private Node<T> head;
+    private Node<T> current;
     private int size;
     
     private static class Node<T> {
@@ -14,7 +15,7 @@ public class LinkedList<T> {
     }
     
     public LinkedList() {
-        head = null;
+        head = current = null;
         size = 0;
     }
     
@@ -23,7 +24,7 @@ public class LinkedList<T> {
         if (head == null) {
             head = newNode;
         } else {
-            Node<T> current = head;
+            current = head;
             while (current.next != null) {
                 current = current.next;
             }
@@ -35,7 +36,7 @@ public class LinkedList<T> {
     public T get(int index) {
         if (index < 0 || index >= size) return null;
         
-        Node<T> current = head;
+        current = head;
         for (int i = 0; i < index; i++) {
             current = current.next;
         }
@@ -49,4 +50,13 @@ public class LinkedList<T> {
     public boolean isEmpty() {
         return size == 0;
     }
+
+    public Node<T> getHead() {
+        return head;
+    }
+
+    public Node<T> getCurrent() {
+        return current;
+    }
+
 }
