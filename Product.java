@@ -15,12 +15,31 @@ public class Product {
         this.reviews = new LinkedList<>();
     }
 
+    public int getProductId() {
+        return productId;
+    }
     public String getName() {
         return name;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
     public int getReviewCount() {
         return reviews.size();
+    }
+
+    public void display() {
+        System.out.println("Product #" + productId +
+                " | " + name +
+                " | price=" + price +
+                " | stock=" + stock +
+                " | reviews=" + reviews.size());
     }
 
     public void addReview(Review r) {
@@ -53,3 +72,4 @@ public class Product {
         return sum / reviews.size();
     }
 }//End Class
+
