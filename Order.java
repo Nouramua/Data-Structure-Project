@@ -3,40 +3,42 @@ import java.util.Date;
 public class Order {
     private String orderId;
     private String customerRef;
-    private LinkedList<Product> listOfProducts;
-    private double totalPrice;
     private Date orderDate;
-    private String status; 
-    
-    public Order(String orderId, String customerRef, LinkedList<Product> listOfProducts) {
+    private double totalPrice;
+    private String orderStatus;
+
+    private LinkedList<Product> products;
+
+    public Order(String orderId, String customerRef) {
         this.orderId = orderId;
         this.customerRef = customerRef;
-        this.listOfProducts = listOfProducts;
-        this.totalPrice = calculateTotalPrice();
+        this.products = new LinkedList<>();
         this.orderDate = new Date();
-        this.status = "pending";
+        this.totalPrice = 0;
+        orderStatus = "pending";
     }
-    
-    private double calculateTotalPrice() {
-        double total = 0.0;
-        for (int i = 0; i < listOfProducts.size(); i++) {
-            Product product = listOfProducts.get(i);
-            total += product.getPrice();
-        }
-        return total;
+
+    public void addProduct(Product p) {
+        products.insert(p);
+        totalPrice += p.getPrice();
     }
-    
-    public String getOrderId() { return orderId; }
-    public String getCustomerRef() { return customerRef; }
-    public LinkedList<Product> getListOfProducts() { return listOfProducts; }
+
     public double getTotalPrice() { return totalPrice; }
+    public String getCustomerRef() { return customerRef; }
+    public String getOrderStatus() { return orderStatus; }
+    public String getOrderId() { return orderId; }
     public Date getOrderDate() { return orderDate; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-    
-    @Override
-    public String toString() {
-        return String.format("Order[ID: %s, Customer: %s, Total: $%.2f, Status: %s]", 
-                           orderId, customerRef, totalPrice, status);
+    public LinkedList<Product> getProducts() { return products; }
+
+    public void displayOrder() {
+        System.out.println("\nOrder ID: " + orderId + " | Date: " + orderDate);
+        System.out.println("Products:");
+        Node<Product> current = products.getHead();
+        while (current != null) {
+            Product p = current.data;
+            System.out.println(" - " + p.getName() + " (" + p.getPrice() + " SAR)");
+            current = current.next;
+        }
+        System.out.println("Total Price: " + totalPrice + " SAR");
     }
 }

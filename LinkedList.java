@@ -1,54 +1,76 @@
 // LinkedList.java
 public class LinkedList<T> {
+
     private Node<T> head;
     private Node<T> current;
     private int size;
-    
-    private static class Node<T> {
-        T data;
-        Node<T> next;
-        
-        Node(T data) {
-            this.data = data;
-            this.next = null;
-        }
-    }
-    
+
     public LinkedList() {
         head = current = null;
         size = 0;
     }
-    
-    public void add(T data) {
-        Node<T> newNode = new Node<>(data);
-        if (head == null) {
-            head = newNode;
+
+    public boolean empty() {
+        return head == null;
+    }
+
+    public boolean last() {
+        return current.next == null;
+    }
+
+    public boolean full() {
+        return false;
+    }
+
+    public void findfirst() {
+        current = head;
+    }
+
+    public void findnext() {
+        current = current.next;
+    }
+
+    public T retrieve() {
+        return current.data;
+    }
+
+    public void update(T val) {
+        current.data = val;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void insert(T val) {
+        Node<T> tmp;
+        if (empty()) {
+            current = head = new Node<T>(val);
         } else {
-            current = head;
-            while (current.next != null) {
-                current = current.next;
-            }
-            current.next = newNode;
+            tmp = current.next;
+            current.next = new Node<T>(val);
+            current = current.next;
+            current.next = tmp;
         }
         size++;
     }
-    
-    public T get(int index) {
-        if (index < 0 || index >= size) return null;
-        
-        current = head;
-        for (int i = 0; i < index; i++) {
-            current = current.next;
+
+    public void remove() {
+        if (current == head) {
+            head = head.next;
+        } else {
+            Node<T> tmp = head;
+            while (tmp.next != current)
+                tmp = tmp.next;
+            tmp.next = current.next;
         }
-        return current.data;
-    }
-    
-    public int size() {
-        return size;
-    }
-    
-    public boolean isEmpty() {
-        return size == 0;
+
+        if (current.next == null)
+            current = head;
+        else
+            current = current.next;
+
+        size--;
     }
 
     public Node<T> getHead() {
@@ -59,4 +81,13 @@ public class LinkedList<T> {
         return current;
     }
 
+    public T get(int index) {
+        if (index < 0 || index >= size) return null;
+        
+        Node<T> current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        return current.data;
+    }
 }

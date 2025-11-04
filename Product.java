@@ -1,10 +1,8 @@
 public class Product {
-
     private int productId;
     private String name;
     private double price;
     private int stock;
-
     private LinkedList<Review> reviews;
 
     public Product(int productId, String name, double price, int stock) {
@@ -15,61 +13,23 @@ public class Product {
         this.reviews = new LinkedList<>();
     }
 
-    public int getProductId() {
-        return productId;
-    }
-    public String getName() {
-        return name;
-    }
+    public int getProductId() { return productId; }
+    public String getName() { return name; }
+    public double getPrice() { return price; }
+    public double getStock() { return stock; }
 
-    public double getPrice() {
-        return price;
-    }
+    public LinkedList<Review> getReviews() { return reviews; }
 
-    public int getStock() {
-        return stock;
-    }
-
-    public int getReviewCount() {
-        return reviews.size();
-    }
-
-    public void display() {
-        System.out.println("Product #" + productId +
-                " | " + name +
-                " | price=" + price +
-                " | stock=" + stock +
-                " | reviews=" + reviews.size());
-    }
-
-    public void addReview(Review r) {
-        reviews.add(r);
-    }
-
-    public void editReview(int customerId, int newRating, String newComment) {
-        LinkedList.current = reviews.getHead();
-        while (current != null) {
-            Review rev = current.data;
-            if (rev.getCustomerId() == customerId) {
-                rev.setRating(newRating);
-                rev.setComment(newComment);
-                System.out.println("Review updated for product: " + name);
-                return;
-            }
-            current = current.next;
-        }
-        System.out.println("No review found for customer " + customerId + " in product " + name);
-    }
+    public void addReview(Review r) { reviews.insert(r); }
 
     public double getAverageRating() {
-        if (reviews.isEmpty()) return 0;
-        double sum = 0;
-        LinkedList.Node<Review> current = reviews.getHead();
+        if (reviews.getSize() == 0) return 0;
+        double total = 0;
+        Node<Review> current = reviews.getHead();
         while (current != null) {
-            sum += current.data.getRating();
+            total += current.data.getRating();
             current = current.next;
         }
-        return sum / reviews.size();
+        return total / reviews.getSize();
     }
-}//End Class
-
+}
