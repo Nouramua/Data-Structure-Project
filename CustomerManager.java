@@ -1,46 +1,81 @@
 import java.io.*;
+import java.util.Scanner;
 
 public class CustomerManager {
-    private static LinkedList<Customer> customers = new LinkedList<>();
+    private LinkedList<Customer> customers;
 
-    public static void loadFromCSV(String filename) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length < 3) continue;
+    public CustomerManager() {
+        customers = new LinkedList<>();
+    }
 
-                int id = Integer.parseInt(parts[0]);
-                String name = parts[1];
-                String email = parts[2];
-
-                customers.insert(new Customer(id, name, email));
-            }
-            System.out.println("Customers loaded successfully from " + filename);
-        } catch (IOException e) {
-            System.out.println("Error loading customers: " + e.getMessage());
+    public void loadFromCSV(String fileName) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(fileName));
+        String line;
+        br.readLine(); // skip header
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split(",", -1);
+            int id = Integer.parseInt(parts[0]);
+            String name = parts[1];
+            String email = parts[2];
+            customers.insert(new Customer(id, name, email));
         }
+        br.close();
     }
 
-    public static void saveToCSV(String filename) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
-            Node<Customer> node = customers.getHead();
-            while (node != null) {
-                Customer c = node.data;
-                bw.write(c.getCustomerId() + "," + c.getName() + "," + c.getEmail());
-                bw.newLine();
-                node = node.next;
-            }
-        } catch (IOException e) {
-            System.out.println("Error saving customers: " + e.getMessage());
+    public void displayAllCustomers() {
+    LinkedList.Node<Customer> current = customers.getHead();
+    System.out.println("\n--- Customer List ---");
+    while (current != null) {
+        Customer c = current.data;
+        System.out.println(c.getCustomerId() + " | " + c.getName() + " | " + c.getEmail());
+        current = current.next;
+    }
+}
+
+public void placeOrderForCustomer(Scanner sc, ProductManager pm, OrderManager om) {
+    System.out.print("Enter customer ID: ");
+    int cid = sc.nextInt(); sc.nextLine();
+    Customer c = findCustomerById(cid);
+    if (c == null) {
+        System.out.println("Customer not found.");
+        return;
+    }
+    om.createOrderInteractiveForCustomer(sc, pm, c);
+}
+
+public void viewOrderHistory(Scanner sc) {
+    System.out.print("Enter customer ID: ");
+    int cid = sc.nextInt(); sc.nextLine();
+    Customer c = findCustomerById(cid);
+    if (c == null) {
+        System.out.println("Customer not found.");
+        return;
+    }
+    c.displayOrderHistory();
+}
+
+private Customer findCustomerById(int id) {
+    LinkedList.Node<Customer> current = customers.getHead();
+    while (current != null) {
+        if (current.data.getCustomerId() == id) return current.data;
+        current = current.next;
+    }
+    return null;
+}
+
+
+    public void saveToCSV(String fileName) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
+        bw.write("customerId,name,email");
+        bw.newLine();
+        LinkedList.Node<Customer> current = customers.getHead();
+        while (current != null) {
+            bw.write(current.data.toCSV());
+            bw.newLine();
+            current = current.next;
         }
+        bw.close();
     }
 
-    public static LinkedList<Customer> getCustomers() {
-        return customers;
-    }
-
-    public static void addCustomer(Customer c) {
-        customers.insert(c);
-    }
+    public LinkedList<Customer> getCustomers() { return customers; }
 }

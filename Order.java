@@ -1,44 +1,55 @@
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Order {
     private String orderId;
-    private String customerRef;
-    private Date orderDate;
+    private Customer customer;
+    private LinkedList<Product> listOfProducts;
     private double totalPrice;
-    private String orderStatus;
+    private Date orderDate;
+    private String status;
 
-    private LinkedList<Product> products;
-
-    public Order(String orderId, String customerRef) {
+    public Order(String orderId, Customer customer) {
         this.orderId = orderId;
-        this.customerRef = customerRef;
-        this.products = new LinkedList<>();
+        this.customer = customer;
+        this.listOfProducts = new LinkedList<>();
+        this.totalPrice = calculateTotalPrice();
         this.orderDate = new Date();
-        this.totalPrice = 0;
-        orderStatus = "pending";
+        this.status = "pending";
     }
 
     public void addProduct(Product p) {
-        products.insert(p);
-        totalPrice += p.getPrice();
+        listOfProducts.insert(p);
+        totalPrice = calculateTotalPrice();
     }
 
-    public double getTotalPrice() { return totalPrice; }
-    public String getCustomerRef() { return customerRef; }
-    public String getOrderStatus() { return orderStatus; }
-    public String getOrderId() { return orderId; }
-    public Date getOrderDate() { return orderDate; }
-    public LinkedList<Product> getProducts() { return products; }
-
-    public void displayOrder() {
-        System.out.println("\nOrder ID: " + orderId + " | Date: " + orderDate);
-        System.out.println("Products:");
-        Node<Product> current = products.getHead();
+    private double calculateTotalPrice() {
+        double total = 0;
+        LinkedList.Node<Product> current = listOfProducts.getHead();
         while (current != null) {
-            Product p = current.data;
-            System.out.println(" - " + p.getName() + " (" + p.getPrice() + " SAR)");
+            total += current.data.getPrice();
             current = current.next;
         }
-        System.out.println("Total Price: " + totalPrice + " SAR");
+        return total;
+    }
+
+    public String getOrderId() { return orderId; }
+    public Customer getCustomer() { return customer; }
+    public LinkedList<Product> getProducts() { return listOfProducts; }
+    public double getTotalPrice() { return totalPrice; }
+    public Date getOrderDate() { return orderDate; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public String toCSV() {
+        StringBuilder productIds = new StringBuilder();
+        LinkedList.Node<Product> current = listOfProducts.getHead();
+        while (current != null) {
+            productIds.append(current.data.getProductId());
+            if (current.next != null) productIds.append("|"); // use | for multiple products
+            current = current.next;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return orderId + "," + customer.getCustomerId() + "," + productIds + "," + totalPrice + "," + sdf.format(orderDate) + "," + status;
     }
 }
