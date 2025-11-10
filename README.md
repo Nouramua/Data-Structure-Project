@@ -1,9 +1,9 @@
-# 🛒 E-Commerce Inventory & Order Management System  
+# E-Commerce Inventory & Order Management System  
 ### CSC 212 - Section 55024
 
 ---
 
-## 🧩 Project Overview  
+## Project Overview  
 
 This project implements an **E-Commerce Inventory & Order Management System** using Java.  
 It manages **products, customers, orders, and reviews** for an online store and provides useful analytical queries to help the business make better decisions.
@@ -18,7 +18,7 @@ The system allows:
 
 ---
 
-## 🎯 Project Objectives  
+## Project Objectives  
 
 - Build a **modular and efficient** Java system using Object-Oriented Programming (OOP).  
 - Implement **data structures manually** (no Java Collections).  
@@ -27,7 +27,7 @@ The system allows:
 
 ---
 
-## 👥 Team Members  
+## Team Members  
 
 | Name | Role / Main Tasks |
 |------|--------------------|
@@ -37,7 +37,7 @@ The system allows:
 
 ---
 
-## 🧱 System Components  
+## System Components  
 
 ### 1. `Product` Class  
 - Attributes: `productId`, `name`, `price`, `stock`, `reviewsList`.  
@@ -68,7 +68,7 @@ The system allows:
 
 ---
 
-## 🔍 Functional Requirements Implemented  
+## Functional Requirements Implemented  
 
 | Requirement | Description | Implemented By |
 |--------------|--------------|----------------|
@@ -82,7 +82,7 @@ The system allows:
 
 ---
 
-## ⚙️ Implementation Details  
+## Implementation Details  
 
 - **Language:** Java  
 - **IDE:** IntelliJ IDEA / VS Code  

@@ -13,19 +13,20 @@ public class Order {
         this.orderId = orderId;
         this.customer = customer;
         this.listOfProducts = new LinkedList<>();
-        this.totalPrice = calculateTotalPrice();
-        this.orderDate = new Date();
-        this.status = "pending";
+        this.totalPrice = 0.0;          
+        this.orderDate = new Date();    
+        this.status = "Pending";        
     }
 
     public void addProduct(Product p) {
+        if (p == null) return;
         listOfProducts.insert(p);
-        totalPrice = calculateTotalPrice();
+        totalPrice += p.getPrice();
     }
 
-    private double calculateTotalPrice() {
+    public double calculateTotalPrice() {
         double total = 0;
-        LinkedList.Node<Product> current = listOfProducts.getHead();
+        Node<Product> current = listOfProducts.getHead();
         while (current != null) {
             total += current.data.getPrice();
             current = current.next;
@@ -33,23 +34,66 @@ public class Order {
         return total;
     }
 
-    public String getOrderId() { return orderId; }
-    public Customer getCustomer() { return customer; }
-    public LinkedList<Product> getProducts() { return listOfProducts; }
-    public double getTotalPrice() { return totalPrice; }
-    public Date getOrderDate() { return orderDate; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    @Override
+    public String toString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format(
+                "Order[ID: %s, Customer: %s, Date: %s, Status: %s, Total: $%.2f]\n",
+                orderId,
+                customer != null ? customer.getName() : "N/A",
+                orderDate != null ? sdf.format(orderDate) : "N/A",
+                status,
+                totalPrice
+        ));
+        sb.append("Products:\n");
+
+        Node<Product> current = listOfProducts.getHead();
+        int count = 1;
+        while (current != null) {
+            Product p = current.data;
+            sb.append(String.format("  %d. %s - $%.2f\n", count, p.getName(), p.getPrice()));
+            current = current.next;
+            count++;
+        }
+
+        return sb.toString();
+    }
 
     public String toCSV() {
         StringBuilder productIds = new StringBuilder();
-        LinkedList.Node<Product> current = listOfProducts.getHead();
+        Node<Product> current = listOfProducts.getHead();
         while (current != null) {
             productIds.append(current.data.getProductId());
-            if (current.next != null) productIds.append("|"); // use | for multiple products
+            if (current.next != null) {
+                productIds.append(";");
+            }
             current = current.next;
         }
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return orderId + "," + customer.getCustomerId() + "," + productIds + "," + totalPrice + "," + sdf.format(orderDate) + "," + status;
+        String dateStr = (orderDate != null) ? sdf.format(orderDate) : "";
+
+        return orderId + ","
+                + (customer != null ? customer.getCustomerId() : "") + ","
+                + productIds + ","
+                + totalPrice + ","
+                + dateStr + ","
+                + status;
     }
+
+    // Getters & setters
+    public String getOrderId() { return orderId; }
+    public Customer getCustomer() { return customer; }
+    public LinkedList<Product> getListOfProducts() { return listOfProducts; }
+    public LinkedList<Product> getProducts() { return listOfProducts; }
+
+    public double getTotalPrice() { return totalPrice; }
+    public Date getOrderDate() { return orderDate; }
+    public String getStatus() { return status; }
+
+    public void setCustomer(Customer customer) { this.customer = customer; }
+    public void setTotalPrice(double totalPrice) { this.totalPrice = totalPrice; }
+    public void setOrderDate(Date orderDate) { this.orderDate = orderDate; }
+    public void setStatus(String status) { this.status = status; }
 }
