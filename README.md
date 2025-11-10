@@ -70,15 +70,15 @@ The system allows:
 
 ## Functional Requirements Implemented  
 
-| Requirement | Description | Implemented By |
-|--------------|--------------|----------------|
-| Read data from CSV | Import products, customers, orders, and reviews. | Student 1 |
-| Add Product/Customer/Order | Create new entries dynamically. | Students 1 & 2 |
-| Add/Edit Review | Manage customer feedback for each product. | Student 3 |
-| Extract all reviews by a customer | Display all reviews written by a given customer. | Student 3 |
-| Suggest Top 3 Products | Based on highest average rating. | Student 3 |
-| Orders Between Dates | List all orders within a given date range. | Student 2 |
-| Common Reviewed Products | Products reviewed by two customers with rating > 4. | Student 3 |
+| Requirement | Description |
+|--------------|--------------|
+| Read data from CSV | Import products, customers, orders, and reviews. |
+| Add Product/Customer/Order | Create new entries dynamically. |
+| Add/Edit Review | Manage customer feedback for each product. |
+| Extract all reviews by a customer | Display all reviews written by a given customer. |
+| Suggest Top 3 Products | Based on highest average rating. |
+| Orders Between Dates | List all orders within a given date range. |
+| Common Reviewed Products | Products reviewed by two customers with rating > 4. |
 
 ---
 
