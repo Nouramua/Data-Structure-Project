@@ -1,0 +1,83 @@
+public static void showTop3Products() {
+	        if (reviews.empty()) {
+	            System.out.println("No products with reviews found.");
+	            return;
+	        }
+	        
+	        LinkedList<Product> allProducts = new LinkedList<>();
+	        Node<Review> current = reviews.getHead();
+	        while (current != null) {
+	            Product p = current.data.getProduct();
+	            boolean exists = false;
+	            Node<Product> temp = allProducts.getHead();
+	            while (temp != null) {
+	                if (temp.data.getProductId().equals(p.getProductId())) {
+	                    exists = true;
+	                    break;
+	                }
+	                temp = temp.next;
+	            }
+	            if (!exists) allProducts.insert(p);
+	            current = current.next;
+	        }
+	        
+	        if (allProducts.getSize() <= 3) {
+	            System.out.println("TOP PRODUCTS BY RATING");
+	            System.out.println("=======================");
+	            
+	            allProducts.findfirst();
+	            int count = 1;
+	            while (true) {
+	                Product p = allProducts.retrieve();
+	                System.out.println(count + ". " + p.getName());
+	                System.out.println("   Rating: " + String.format("%.1f", p.getAverageRating()) + "/5.0");
+	                System.out.println("   ID: " + p.getProductId());
+	                System.out.println("   Price: $" + p.getPrice());
+	                System.out.println("----------------------------");
+	                
+	                count++;
+	                if (allProducts.last()) break;
+	                allProducts.findnext();
+	            }
+	            return;
+	        }
+	        
+	        int totalProducts = allProducts.getSize();
+	        Product[] productsArray = new Product[totalProducts];
+	        double[] ratingsArray = new double[totalProducts];
+	        
+	        allProducts.findfirst();
+	        for (int i = 0; i < totalProducts; i++) {
+	            productsArray[i] = allProducts.retrieve();
+	            ratingsArray[i] = productsArray[i].getAverageRating();
+	            if (!allProducts.last()) allProducts.findnext();
+	        }
+	        
+	        for (int i = 0; i < 3; i++) {
+	            for (int j = i + 1; j < totalProducts; j++) {
+	                if (ratingsArray[j] > ratingsArray[i]) {
+	                    Product tempProduct = productsArray[i];
+	                    productsArray[i] = productsArray[j];
+	                    productsArray[j] = tempProduct;
+	                    
+	                    double tempRating = ratingsArray[i];
+	                    ratingsArray[i] = ratingsArray[j];
+	                    ratingsArray[j] = tempRating;
+	                }
+	            }
+	        }
+	        
+	        System.out.println("TOP 3 PRODUCTS BY RATING");
+	        System.out.println("==========================");
+	        
+	        for (int i = 0; i < 3; i++) {
+	            Product p = productsArray[i];
+	            System.out.println((i+1) + ". " + p.getName());
+	            System.out.println("   Rating: " + String.format("%.1f", ratingsArray[i]) + "/5.0");
+	            System.out.println("   ID: " + p.getProductId());
+	            System.out.println("   Price: $" + p.getPrice());
+	            System.out.println("----------------------------");
+	        }
+	    }
+
+ملاحظة: اذا بتستخدمون هذي عدلوا على استدعاء الميثود بالمين تصير Review.showTop3Products()
